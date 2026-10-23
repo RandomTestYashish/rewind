@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc -b"
+    "typecheck": "tsc -b",
+    "deploy": "bash scripts/deploy.sh"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.3.0",

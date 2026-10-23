@@ -1,5 +1,7 @@
 # Airtel Rewind 2026
 
+**Preview:** https://randomtestyashish.github.io/rewind/
+
 A clickable prototype of a year-in-review ("Rewind") for Airtel customers. It covers a story-style annual summary, a customer support report, a reusable share sheet with downloadable share cards, and a final Invite Friends screen.
 
 On desktop it shows a 390×844 phone frame. On a phone it runs full screen.
@@ -21,6 +23,7 @@ npm run dev        # http://localhost:5173
 | `npm run lint` | ESLint |
 | `npm run build` | Type-check and build to `dist/` (relative paths, so it works on GitHub Pages) |
 | `npm run preview` | Serve the built `dist/` |
+| `npm run deploy` | Test, build and publish `dist/` to the `gh-pages` branch, which updates the preview link |
 
 ### URL parameters for review
 
