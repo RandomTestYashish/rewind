@@ -12,8 +12,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
-import { PixelSprite } from "@/components/pixel/PixelSprite"
-import { MASCOT } from "@/components/pixel/sprites"
 import type { RewindData, SupportChannel } from "@/data/rewind"
 import { formatHours } from "@/lib/format"
 import { loadReports, saveReport, type SupportReport } from "@/lib/reports"
@@ -169,7 +167,7 @@ function ReportForm() {
   if (submitted) {
     return (
       <div className="flex flex-col items-center gap-3 py-6 text-center" role="status">
-        <PixelSprite sprite={MASCOT} scale={5} className="animate-px-bob" title="Ping" />
+        <div className="grid size-14 place-items-center bg-white text-primary px-notch"><CheckCircle2 className="size-7" /></div>
         <div>
           <p className="font-serif text-2xl">We've got it</p>
           <p className="text-sm text-muted-foreground">

@@ -4,7 +4,7 @@
 
 A clickable prototype of a year-in-review ("Rewind") for Airtel customers. It covers a story-style annual summary, a customer support report, a reusable share sheet with downloadable share cards, and a final Invite Friends screen.
 
-The look is pixel-art on cream paper: little pixel rooms with Ping the mascot and speech bubbles, serif headlines, mono labels and chunky red pixel buttons. On desktop it shows a 390×844 phone frame. On a phone it runs full screen.
+The look: white paper, ink borders with offset shadows, notched callout boxes, serif headlines, mono labels and chunky red pixel buttons, inside a wooden frame. On desktop it shows a 390×844 phone frame. On a phone it runs full screen.
 
 ## Run it
 
@@ -83,7 +83,7 @@ src/
     rewind/InviteFriends.tsx
     share/ShareSheet.tsx          reusable share interface
     share/ShareCard.tsx           downloadable card templates
-    pixel/                        sprites (mascot + icons), PixelScene, SpeechBubble
+    theme/Callout.tsx             notched callout box
     portal-container.tsx          keeps sheets inside the phone frame
     ui/                           shadcn/ui components
 ```

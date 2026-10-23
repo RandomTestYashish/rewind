@@ -54,28 +54,28 @@
 }
 
 :root {
-    /* Pixel-paper theme: cream paper, warm ink, Airtel red */
-    --paper: #f6f1e4;
-    --paper-2: #efe6d2;
+    /* White paper, warm ink, Airtel red */
+    --paper: #ffffff;
+    --paper-2: #f4f1ea;
     --ink: #1f1b16;
     --wood: #8a5a2b;
     --wood-dark: #5e3a17;
     --background: var(--paper);
     --foreground: var(--ink);
-    --card: #fffaf0;
+    --card: #ffffff;
     --card-foreground: var(--ink);
     --popover: var(--paper);
     --popover-foreground: var(--ink);
     --primary: #e40000;
     --primary-foreground: #ffffff;
-    --secondary: #ece3cf;
+    --secondary: #f4f1ea;
     --secondary-foreground: var(--ink);
-    --muted: #ece3cf;
+    --muted: #f4f1ea;
     --muted-foreground: #6b6458;
-    --accent: #ece3cf;
+    --accent: #f4f1ea;
     --accent-foreground: var(--ink);
     --destructive: #c81e1e;
-    --border: #d6c9ad;
+    --border: #ddd6c8;
     --input: #c9bb9c;
     --ring: #e40000;
     --chart-1: #e40000;
@@ -220,16 +220,7 @@
   border-top: 3px solid var(--ink);
 }
 
-.pixelated {
-  image-rendering: pixelated;
-  shape-rendering: crispEdges;
-}
 
-@keyframes px-bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-.animate-px-bob { animation: px-bob 1.2s steps(2) infinite; }
 
 @keyframes px-blink {
   0%, 92%, 100% { opacity: 1; }
@@ -238,5 +229,5 @@
 .animate-px-blink { animation: px-blink 1.4s steps(1) infinite; }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-px-bob, .animate-px-blink { animation: none; }
+  .animate-px-blink { animation: none; }
 }

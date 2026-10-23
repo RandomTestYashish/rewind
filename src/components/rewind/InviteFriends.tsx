@@ -1,19 +1,17 @@
 import { useState } from "react"
-import { Check, ChevronLeft, ChevronRight, Copy, RotateCcw, Share2, UserPlus } from "lucide-react"
+import { Check, Copy, RotateCcw, Share2, UserPlus } from "lucide-react"
 import { toast } from "sonner"
-import { PixelScene } from "@/components/pixel/PixelScene"
+import { Callout } from "@/components/theme/Callout"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import type { RewindData } from "@/data/rewind"
 import { copyText } from "@/lib/share"
-import { cn } from "@/lib/utils"
 
 export const SUGGESTED_CONTACTS = [
-  { id: "c1", name: "Priya Sharma", network: "Jio", calls: 214, tint: "#f7c6c0" },
-  { id: "c2", name: "Rohan Mehta", network: "Vi", calls: 168, tint: "#c9dcf0" },
-  { id: "c3", name: "Neha Gupta", network: "Jio", calls: 97, tint: "#d9ccef" },
-  { id: "c4", name: "Kabir Singh", network: "BSNL", calls: 64, tint: "#cfe5c4" },
-  { id: "c5", name: "Ananya Rao", network: "Vi", calls: 51, tint: "#f5dfae" },
+  { id: "c1", name: "Priya Sharma", network: "Jio", calls: 214 },
+  { id: "c2", name: "Rohan Mehta", network: "Vi", calls: 168 },
+  { id: "c3", name: "Neha Gupta", network: "Jio", calls: 97 },
+  { id: "c4", name: "Kabir Singh", network: "BSNL", calls: 64 },
 ]
 
 const initials = (name: string) => name.split(" ").map((part) => part[0]).join("").slice(0, 2)
@@ -27,12 +25,8 @@ interface InviteFriendsProps {
 export function InviteFriends({ data, onShareInvite, onReplay }: InviteFriendsProps) {
   const { referral } = data
   const [invited, setInvited] = useState<Set<string>>(new Set())
-  const [selectedIndex, setSelectedIndex] = useState(0)
   const [copied, setCopied] = useState(false)
   const invitedTotal = referral.invitedCount + invited.size
-  const contact = SUGGESTED_CONTACTS[selectedIndex]
-  const first = contact.name.split(" ")[0]
-  const done = invited.has(contact.id)
 
   async function handleCopy() {
     try {
@@ -45,17 +39,14 @@ export function InviteFriends({ data, onShareInvite, onReplay }: InviteFriendsPr
     }
   }
 
-  function invite() {
+  function invite(contact: (typeof SUGGESTED_CONTACTS)[number]) {
     setInvited((current) => new Set(current).add(contact.id))
-    toast.success(`Invite sent to ${first}`)
+    toast.success(`Invite sent to ${contact.name.split(" ")[0]}`)
   }
-
-  const step = (delta: number) =>
-    setSelectedIndex((i) => (i + delta + SUGGESTED_CONTACTS.length) % SUGGESTED_CONTACTS.length)
 
   return (
     <div className="flex h-full flex-col overflow-y-auto bg-background">
-      <div className="flex shrink-0 items-center justify-between px-4 pt-4">
+      <div className="flex shrink-0 items-center justify-between px-4 pt-4 pb-3">
         <span className="font-pixel-label text-[13px]">
           <span className="font-semibold">airtel</span> rewind <span className="text-muted-foreground">· invite</span>
         </span>
@@ -64,122 +55,82 @@ export function InviteFriends({ data, onShareInvite, onReplay }: InviteFriendsPr
         </Button>
       </div>
 
-      <div className="shrink-0 px-6 pt-5 pb-4">
-        <h1 className="font-serif text-[40px] leading-[1.02]">Bring your people along</h1>
-        <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
-          Friends get {referral.rewardPerFriend} when they join with your code. You get the same for each one.
-        </p>
-      </div>
+      <div className="flex shrink-0 flex-col gap-5 px-4 pb-8">
+        <section className="flex flex-col items-center bg-white px-6 pt-8 pb-6 text-center px-box">
+          <p className="font-pixel-label text-xs text-muted-foreground uppercase">Invite friends</p>
+          <h1 className="mt-2 font-serif text-[44px] leading-[1.02]">Bring your people along</h1>
+          <p className="mt-3 max-w-[30ch] text-[15px] leading-relaxed text-muted-foreground">
+            Friends get {referral.rewardPerFriend} when they join with your code. You get the same for each one.
+          </p>
 
-      {/* "Meet the team"-style picker */}
-      <div className="shrink-0 border-t-[3px] border-[var(--ink)] bg-[var(--paper-2)] px-3 pt-3 pb-4">
-        <p className="font-pixel-label px-1 text-xs">People you talk to most</p>
-        <div className="mt-3 flex items-center gap-2">
-          <Button variant="pixel-outline" size="icon-sm" className="size-8 shrink-0" aria-label="Previous contact" onClick={() => step(-1)}>
-            <ChevronLeft />
-          </Button>
-          <ul className="flex flex-1 justify-between gap-1.5" aria-label="Suggested contacts">
-            {SUGGESTED_CONTACTS.map((c, i) => {
-              const active = i === selectedIndex
-              return (
-                <li key={c.id} className="relative flex flex-col items-center">
-                  {active && <span aria-hidden className="absolute -top-2 size-0 border-x-[5px] border-t-[6px] border-x-transparent border-t-primary" />}
-                  <button
-                    type="button"
-                    onClick={() => setSelectedIndex(i)}
-                    aria-pressed={active}
-                    aria-label={`Select ${c.name}`}
-                    className={cn(
-                      "relative grid size-12 place-items-center border-[3px] font-serif text-lg transition-transform active:translate-y-px",
-                      active ? "border-primary shadow-[3px_3px_0_0_#a30000]" : "border-[#c9bb9c]",
-                    )}
-                    style={{ backgroundColor: c.tint }}
-                  >
-                    {initials(c.name)}
-                    {invited.has(c.id) && (
-                      <span className="absolute -right-1.5 -bottom-1.5 grid size-4 place-items-center bg-[var(--ink)] text-white">
-                        <Check className="size-3" />
-                      </span>
-                    )}
-                  </button>
-                  <span className={cn("font-pixel-label mt-1 text-[10px]", active ? "font-semibold" : "text-muted-foreground")}>
-                    {c.name.split(" ")[0]}
-                  </span>
-                </li>
-              )
-            })}
-          </ul>
-          <Button variant="pixel-outline" size="icon-sm" className="size-8 shrink-0" aria-label="Next contact" onClick={() => step(1)}>
-            <ChevronRight />
-          </Button>
-        </div>
-      </div>
-
-      <PixelScene
-        scene="gold"
-        prop="heart"
-        quip={done ? <>invite sent to {first}. fingers crossed.</> : <>{first} is still on {contact.network}. bring them over?</>}
-        className="shrink-0"
-      />
-
-      <div className="flex shrink-0 flex-col gap-5 px-5 pt-5 pb-8">
-        <div className="flex items-center justify-between gap-3">
-          <div className="min-w-0">
-            <p className="truncate font-serif text-[28px] leading-tight">{contact.name}</p>
-            <p className="font-pixel-label text-xs text-muted-foreground">
-              on {contact.network} · called {contact.calls} times
-            </p>
-          </div>
-          <Button
-            variant={done ? "pixel-outline" : "pixel"}
-            size="lg"
-            className="h-11 shrink-0 px-4 text-base"
-            disabled={done}
-            onClick={invite}
-            aria-label={done ? `${contact.name} invited` : `Invite ${contact.name}`}
-          >
-            {done ? <><Check /> Invited</> : <><UserPlus /> Invite</>}
-          </Button>
-        </div>
-
-        <div className="bg-card p-4 px-box">
-          <p className="font-pixel-label text-xs text-muted-foreground">Your referral code</p>
-          <div className="mt-2 flex items-center gap-2">
+          <div className="mt-6 flex w-full items-center gap-2">
             <Input
               readOnly
               value={referral.code}
               aria-label="Referral code"
-              className="h-11 border-2 border-[var(--ink)] bg-white font-serif text-xl tracking-[0.25em]"
+              className="h-12 border-2 border-[var(--ink)] bg-white text-center font-serif text-2xl tracking-[0.25em]"
             />
-            <Button size="icon-lg" variant="pixel-outline" className="size-11 shrink-0" onClick={handleCopy} aria-label="Copy referral code">
+            <Button size="icon-lg" variant="pixel-outline" className="size-12 shrink-0" onClick={handleCopy} aria-label="Copy referral code">
               {copied ? <Check /> : <Copy />}
             </Button>
           </div>
           <Button size="lg" variant="pixel" className="mt-5 h-12 w-full" onClick={onShareInvite}>
             <Share2 /> Share invite card
           </Button>
-        </div>
+          <p className="font-pixel-label mt-4 text-[11px] text-muted-foreground">Rewards land within 7 days of your friend's first recharge.</p>
+        </section>
 
-        <div className="bg-card p-4 px-box">
-          <div className="flex items-baseline justify-between">
-            <p className="font-serif text-xl">Your progress</p>
-            <p className="font-pixel-label text-xs text-muted-foreground">
+        <section className="bg-white p-5 px-box">
+          <div>
+            <h2 className="font-serif text-2xl">Your progress</h2>
+            <p className="font-pixel-label mt-1 text-xs text-muted-foreground">
               {referral.joinedCount} of {referral.goal} friends joined · {invitedTotal} invited
             </p>
           </div>
           <div className="mt-3 flex gap-1.5" role="img" aria-label={`${referral.joinedCount} of ${referral.goal} friends joined`}>
             {Array.from({ length: referral.goal }, (_, i) => (
-              <span
-                key={i}
-                className="h-4 flex-1 border-2 border-[var(--ink)]"
-                style={{ background: i < referral.joinedCount ? "#e40000" : "#fffaf0" }}
-              />
+              <span key={i} className="h-4 flex-1 border-2 border-[var(--ink)]" style={{ background: i < referral.joinedCount ? "#e40000" : "#fff" }} />
             ))}
           </div>
-          <p className="mt-3 text-xs text-muted-foreground">
-            {referral.goal - referral.joinedCount} more and you unlock a free month of Airtel Xstream Play Premium.
-          </p>
-        </div>
+          <Callout className="mt-5 text-[15px]">
+            {referral.goal - referral.joinedCount} more and you unlock a free month of Xstream Play Premium.
+          </Callout>
+        </section>
+
+        <section className="bg-white p-5 px-box">
+          <h2 className="font-serif text-2xl">People you talk to most</h2>
+          <p className="font-pixel-label mt-1 text-xs text-muted-foreground">From your {data.year} Rewind. Not on Airtel yet.</p>
+          <ul className="mt-4 flex flex-col" aria-label="Suggested contacts">
+            {SUGGESTED_CONTACTS.map((contact, i) => {
+              const done = invited.has(contact.id)
+              return (
+                <li key={contact.id} className={i > 0 ? "border-t-2 border-dashed border-[var(--border)] pt-3 mt-3" : undefined}>
+                  <div className="flex items-center gap-3">
+                    <span className="grid size-11 shrink-0 place-items-center border-2 border-[var(--ink)] bg-[var(--paper-2)] font-serif text-lg">
+                      {initials(contact.name)}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate font-serif text-lg leading-tight">{contact.name}</p>
+                      <p className="font-pixel-label truncate text-[11px] text-muted-foreground">
+                        on {contact.network} · called {contact.calls} times
+                      </p>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant={done ? "pixel-outline" : "pixel"}
+                      className="h-9 shrink-0 px-3 text-sm"
+                      disabled={done}
+                      onClick={() => invite(contact)}
+                      aria-label={done ? `${contact.name} invited` : `Invite ${contact.name}`}
+                    >
+                      {done ? <><Check /> Invited</> : <><UserPlus /> Invite</>}
+                    </Button>
+                  </div>
+                </li>
+              )
+            })}
+          </ul>
+        </section>
       </div>
     </div>
   )
