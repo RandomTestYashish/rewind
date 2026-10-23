@@ -4,7 +4,7 @@
 
 A clickable prototype of a year-in-review ("Rewind") for Airtel customers. It covers a story-style annual summary, a customer support report, a reusable share sheet with downloadable share cards, and a final Invite Friends screen.
 
-On desktop it shows a 390×844 phone frame. On a phone it runs full screen.
+The look is pixel-art on cream paper: little pixel rooms with Ping the mascot and speech bubbles, serif headlines, mono labels and chunky red pixel buttons. On desktop it shows a 390×844 phone frame. On a phone it runs full screen.
 
 ## Run it
 
@@ -83,15 +83,16 @@ src/
     rewind/InviteFriends.tsx
     share/ShareSheet.tsx          reusable share interface
     share/ShareCard.tsx           downloadable card templates
+    pixel/                        sprites (mascot + icons), PixelScene, SpeechBubble
     portal-container.tsx          keeps sheets inside the phone frame
     ui/                           shadcn/ui components
 ```
 
 ## Stack
 
-Vite 6, React 19, TypeScript, Tailwind CSS v4, shadcn/ui (Radix, "Nova" preset) with lucide-react icons, Sonner toasts, html-to-image, and Vitest + Testing Library + jsdom.
+Vite 6, React 19, TypeScript, Tailwind CSS v4, DM Serif Display + IBM Plex Mono + Geist (Fontsource), shadcn/ui (Radix, "Nova" preset) with lucide-react icons, Sonner toasts, html-to-image, and Vitest + Testing Library + jsdom.
 
-shadcn/ui components used: Button, Card, Badge, Progress, Tabs, Sheet, Select, RadioGroup, Checkbox, Input, Textarea, Label, Avatar, Separator, ToggleGroup, Sonner. `ui/sheet.tsx` has one local change: it portals into the phone frame through `PortalContainerContext`.
+shadcn/ui components used: Button, Card, Badge, Progress, Tabs, Sheet, Select, RadioGroup, Checkbox, Input, Textarea, Label, Avatar, Separator, ToggleGroup, Sonner. Two local changes to shadcn files: `ui/sheet.tsx` portals into the phone frame through `PortalContainerContext`, and `ui/button.tsx` adds `pixel` and `pixel-outline` variants (styled in `index.css`).
 
 ## Limitations
 

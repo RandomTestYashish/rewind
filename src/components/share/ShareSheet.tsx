@@ -102,9 +102,9 @@ export function ShareSheet({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="max-h-[92%] gap-3 overflow-y-auto rounded-t-3xl pb-4">
+      <SheetContent side="bottom" className="max-h-[94%] gap-3 overflow-y-auto rounded-none pb-5">
         <SheetHeader className="pb-0">
-          <SheetTitle>{title}</SheetTitle>
+          <SheetTitle className="font-serif text-2xl font-normal">{title}</SheetTitle>
           {description && <SheetDescription>{description}</SheetDescription>}
         </SheetHeader>
 
@@ -113,6 +113,7 @@ export function ShareSheet({
             type="single"
             variant="outline"
             size="sm"
+            spacing={0}
             value={selected?.id}
             onValueChange={(value) => value && setSelectedId(value)}
             className="mx-auto flex-wrap justify-center px-4"
@@ -132,27 +133,27 @@ export function ShareSheet({
           </div>
         </div>
 
-        <SheetFooter className="gap-3 pt-1">
-          <div className="grid grid-cols-2 gap-2">
-            <Button size="lg" className="h-11" onClick={handleDownload} disabled={busy !== null}>
+        <SheetFooter className="gap-4 px-5 pt-2">
+          <div className="grid grid-cols-2 gap-4">
+            <Button size="lg" variant="pixel" className="h-12" onClick={handleDownload} disabled={busy !== null}>
               {busy === "download" ? <Loader2 className="animate-spin" /> : <Download />}
               Download PNG
             </Button>
-            <Button size="lg" variant="outline" className="h-11" onClick={handleNativeShare} disabled={busy !== null}>
+            <Button size="lg" variant="pixel-outline" className="h-12 font-serif text-base" onClick={handleNativeShare} disabled={busy !== null}>
               {busy === "share" ? <Loader2 className="animate-spin" /> : <Share2 />}
               Share image
             </Button>
           </div>
-          <div className="grid grid-cols-5 gap-2">
+          <div className="grid grid-cols-5 gap-3">
             {CHANNELS.map(({ id, label, icon: Icon }) => (
-              <Button key={id} variant="secondary" className="h-14 flex-col gap-1 text-[11px]" asChild>
+              <Button key={id} variant="pixel-outline" className="font-pixel-label h-14 flex-col gap-1 text-[10px]" asChild>
                 <a href={channelUrl(id, shareText, shareUrl)} target="_blank" rel="noreferrer">
                   <Icon className="size-4" />
                   {label}
                 </a>
               </Button>
             ))}
-            <Button variant="secondary" className="h-14 flex-col gap-1 text-[11px]" onClick={handleCopy}>
+            <Button variant="pixel-outline" className="font-pixel-label h-14 flex-col gap-1 text-[10px]" onClick={handleCopy}>
               <Link2 className="size-4" />
               Copy link
             </Button>

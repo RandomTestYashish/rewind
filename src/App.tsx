@@ -49,7 +49,7 @@ export default function App({ data = rewind, autoAdvanceMs }: AppProps) {
   const finish = () => setScreen("invite")
 
   const slides = useMemo(
-    () => buildSlides(data, { onShare: openShare, onOpenSupport: openSupport, onFinish: finish }),
+    () => buildSlides(data, { onStart: () => setSlideIndex(1), onShare: openShare, onOpenSupport: openSupport, onFinish: finish }),
     [data],
   )
   const safeIndex = Math.min(slideIndex, slides.length - 1)
@@ -64,13 +64,16 @@ export default function App({ data = rewind, autoAdvanceMs }: AppProps) {
   }, [share.kind, data])
 
   const overlayOpen = share.open || support.open
-  const headerButton = "pointer-events-auto text-white hover:bg-white/15 hover:text-white"
+  const headerButton = "pointer-events-auto size-8"
 
   return (
-    <main className="grid min-h-dvh place-items-center bg-neutral-950 sm:p-6">
+    <main
+      className="grid min-h-dvh place-items-center bg-[#2a1d14] sm:p-6"
+      style={{ backgroundImage: "repeating-linear-gradient(90deg, rgba(0,0,0,.18) 0 2px, transparent 2px 56px)" }}
+    >
       <div
         ref={setFrame}
-        className="relative h-dvh w-full overflow-hidden bg-background [transform:translateZ(0)] sm:h-[844px] sm:w-[390px] sm:rounded-[48px] sm:border-[10px] sm:border-neutral-800 sm:shadow-2xl"
+        className="relative h-dvh w-full overflow-hidden bg-background [container-type:size] [transform:translateZ(0)] sm:h-[844px] sm:w-[390px] sm:border-[10px] sm:border-[var(--wood)] sm:shadow-[0_0_0_4px_var(--wood-dark),0_0_0_7px_var(--ink),12px_16px_0_7px_rgba(0,0,0,.35)]"
       >
         <PortalContainerContext.Provider value={frame}>
           {screen === "story" ? (
@@ -83,13 +86,13 @@ export default function App({ data = rewind, autoAdvanceMs }: AppProps) {
               paused={overlayOpen}
               headerActions={
                 <>
-                  <Button size="icon-sm" variant="ghost" className={headerButton} aria-label="Share" onClick={() => openShare("summary")}>
+                  <Button size="icon-sm" variant="pixel-outline" className={headerButton} aria-label="Share" onClick={() => openShare("summary")}>
                     <Share2 />
                   </Button>
-                  <Button size="icon-sm" variant="ghost" className={headerButton} aria-label="Report a problem" onClick={() => openSupport("report")}>
+                  <Button size="icon-sm" variant="pixel-outline" className={headerButton} aria-label="Report a problem" onClick={() => openSupport("report")}>
                     <Flag />
                   </Button>
-                  <Button size="icon-sm" variant="ghost" className={headerButton} aria-label="Skip to invite friends" onClick={finish}>
+                  <Button size="icon-sm" variant="pixel-outline" className={headerButton} aria-label="Skip to invite friends" onClick={finish}>
                     <X />
                   </Button>
                 </>

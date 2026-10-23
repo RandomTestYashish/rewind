@@ -12,6 +12,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
+import { PixelSprite } from "@/components/pixel/PixelSprite"
+import { MASCOT } from "@/components/pixel/sprites"
 import type { RewindData, SupportChannel } from "@/data/rewind"
 import { formatHours } from "@/lib/format"
 import { loadReports, saveReport, type SupportReport } from "@/lib/reports"
@@ -50,13 +52,13 @@ export function SupportReportSheet({ open, onOpenChange, data, defaultTab = "ove
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="max-h-[92%] gap-0 overflow-y-auto rounded-t-3xl">
+      <SheetContent side="bottom" className="max-h-[94%] gap-0 overflow-y-auto rounded-none">
         <SheetHeader>
-          <SheetTitle>Your {data.year} support report</SheetTitle>
+          <SheetTitle className="font-serif text-2xl font-normal">Your {data.year} support report</SheetTitle>
           <SheetDescription>Every request you raised this year, and a quick way to report a new one.</SheetDescription>
         </SheetHeader>
         <Tabs value={tab} onValueChange={setTab} className="px-4 pb-4">
-          <TabsList className="w-full">
+          <TabsList className="w-full border-2 border-[var(--ink)] p-0.5">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="report">Report a problem</TabsTrigger>
           </TabsList>
@@ -97,7 +99,7 @@ function SupportOverview({ data }: { data: RewindData }) {
             <li key={ticket.id}>
               <Card size="sm">
                 <CardContent className="flex items-start gap-3">
-                  <div className="grid size-9 shrink-0 place-items-center rounded-full bg-primary/10 text-primary">
+                  <div className="grid size-9 shrink-0 place-items-center border-2 border-[var(--ink)] bg-[var(--paper-2)] text-primary">
                     <Icon className="size-4" />
                   </div>
                   <div className="min-w-0 flex-1">
@@ -126,9 +128,9 @@ function SupportOverview({ data }: { data: RewindData }) {
 
 function Metric({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl bg-muted p-3 text-center">
-      <div className="text-lg font-bold">{value}</div>
-      <div className="text-[11px] text-muted-foreground">{label}</div>
+    <div className="bg-card p-3 text-center px-box">
+      <div className="font-serif text-2xl leading-tight">{value}</div>
+      <div className="font-pixel-label text-[10px] text-muted-foreground">{label}</div>
     </div>
   )
 }
@@ -167,15 +169,15 @@ function ReportForm() {
   if (submitted) {
     return (
       <div className="flex flex-col items-center gap-3 py-6 text-center" role="status">
-        <CheckCircle2 className="size-12 text-green-600" />
+        <PixelSprite sprite={MASCOT} scale={5} className="animate-px-bob" title="Ping" />
         <div>
-          <p className="text-base font-semibold">We've got it</p>
+          <p className="font-serif text-2xl">We've got it</p>
           <p className="text-sm text-muted-foreground">
             Ticket <span className="font-mono font-semibold text-foreground">{submitted.id}</span> is open. We'll reply by{" "}
             {submitted.contact.toUpperCase()} within 24 hours.
           </p>
         </div>
-        <Button variant="outline" onClick={reset}>Report another problem</Button>
+        <Button variant="pixel-outline" size="lg" className="h-10" onClick={reset}>Report another problem</Button>
         <ReportHistory reports={history} />
       </div>
     )
@@ -232,7 +234,7 @@ function ReportForm() {
         <Label htmlFor="attach-snapshot" className="font-normal">Attach my Rewind summary so the team can check it</Label>
       </div>
 
-      <Button type="submit" size="lg" className="h-11">Submit report</Button>
+      <Button type="submit" size="lg" variant="pixel" className="mt-1 h-12">Submit report</Button>
       {history.length > 0 && <ReportHistory reports={history} />}
     </form>
   )
@@ -241,10 +243,10 @@ function ReportForm() {
 function ReportHistory({ reports }: { reports: SupportReport[] }) {
   return (
     <div className="w-full text-left">
-      <p className="mb-2 text-xs font-semibold text-muted-foreground uppercase">Reported from Rewind</p>
+      <p className="font-pixel-label mb-2 text-xs text-muted-foreground uppercase">Reported from Rewind</p>
       <ul className="flex flex-col gap-1.5">
         {reports.map((report) => (
-          <li key={report.id} className="flex items-center justify-between rounded-lg bg-muted px-3 py-2 text-xs">
+          <li key={report.id} className="flex items-center justify-between border-2 border-[var(--ink)] bg-card px-3 py-2 text-xs">
             <span className="truncate">{ISSUE_CATEGORIES.find((c) => c.value === report.category)?.label ?? report.category}</span>
             <Badge variant="outline" className="font-mono">{report.id}</Badge>
           </li>

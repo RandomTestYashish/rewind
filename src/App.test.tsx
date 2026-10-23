@@ -21,7 +21,7 @@ describe("Airtel Rewind app", () => {
     render(<App autoAdvanceMs={0} />)
     expect(screen.getByRole("heading", { name: /hey aarav/i })).toBeInTheDocument()
 
-    await next(user)
+    await user.click(screen.getByRole("button", { name: /start my rewind/i }))
     expect(screen.getByText("486")).toBeInTheDocument()
     for (let i = 0; i < 6; i++) await next(user)
     expect(screen.getByRole("heading", { name: rewind.persona.title })).toBeInTheDocument()

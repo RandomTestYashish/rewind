@@ -5,8 +5,8 @@ import { cn } from "@/lib/utils"
 export interface StorySlide {
   id: string
   label: string
-  /** CSS background for the slide. */
-  background: string
+  /** CSS background for the slide. Defaults to the paper colour. */
+  background?: string
   content: ReactNode
 }
 
@@ -87,26 +87,28 @@ export function StoryViewer({
 
   return (
     <section
-      className="relative flex h-full flex-col overflow-hidden text-white transition-[background] duration-700"
-      style={{ background: slide.background }}
+      className="relative flex h-full flex-col overflow-hidden bg-background text-foreground"
+      style={slide.background ? { background: slide.background } : undefined}
       aria-roledescription="story"
       aria-label={`Rewind story, slide ${index + 1} of ${slides.length}: ${slide.label}`}
       onPointerDown={() => setHolding(true)}
       onPointerUp={() => setHolding(false)}
       onPointerLeave={() => setHolding(false)}
     >
-      <div className="relative z-20 flex gap-1 px-3 pt-3" aria-hidden>
+      <div className="relative z-20 flex gap-[5px] px-4 pt-3" aria-hidden>
         {slides.map((s, i) => (
           <Progress
             key={s.id}
             value={progressFor(i)}
-            className="h-[3px] bg-white/30 [&>[data-slot=progress-indicator]]:bg-white [&>[data-slot=progress-indicator]]:transition-none"
+            className="h-[6px] rounded-none bg-[var(--paper-2)] shadow-[0_0_0_2px_var(--ink)] [&>[data-slot=progress-indicator]]:bg-primary [&>[data-slot=progress-indicator]]:transition-none"
           />
         ))}
       </div>
-      <div className="relative z-20 flex items-center justify-between px-4 pt-3">
-        <span className="text-sm font-bold tracking-tight">airtel <span className="font-normal opacity-80">rewind</span></span>
-        <div className="flex items-center gap-1">{headerActions}</div>
+      <div className="relative z-20 flex items-center justify-between px-4 pt-3 pb-3">
+        <span className="font-pixel-label text-[13px]">
+          <span className="font-semibold">airtel</span> rewind <span className="text-muted-foreground">· {String(index + 1).padStart(2, "0")}/{String(slides.length).padStart(2, "0")}</span>
+        </span>
+        <div className="flex items-center gap-2">{headerActions}</div>
       </div>
 
       {/* Tap zones sit under the content; content opts back in with pointer-events-auto */}
@@ -116,8 +118,8 @@ export function StoryViewer({
       <div
         key={slide.id}
         className={cn(
-          "pointer-events-none relative z-10 flex flex-1 flex-col px-6 pt-6 pb-8",
-          "animate-in duration-500 fade-in slide-in-from-bottom-4",
+          "pointer-events-none relative z-10 flex min-h-0 flex-1 flex-col",
+          "animate-in duration-300 fade-in",
         )}
       >
         {slide.content}
